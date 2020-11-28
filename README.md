@@ -16,7 +16,7 @@ Usage
 
 2.	Download the raw sequencing files and database files
   
-  *.subreads.bam, m*.subreads.xml, adapters.fasta, ref.fasta, etc.
+  > m*.subreads.bam, m*.subreads.bam.bai, m*.subreads.xml, adapters.fasta, ref.fasta, etc.
 
 3.  Software installation: 
   
@@ -48,25 +48,45 @@ Usage
 4.	Length distribution of HiFi reads
   
   $seqkit fx2tab -l -n -i -H outccs_fasta > ccslen_txt
+  
+  
+• Processing
+1.	Mapping to reference genome
+  
+  $minimap2 -d ref_min ref.fasta
+  
+  $minimap2 -ax map-pb ref_min outccs_fasta > all_sam
+  
+  $samtools sort -@ 4 -O bam -o all_sorted_bam all_sam
+  
+  $samtools index all_sorted_bam 
+  
+  $samtools faidx ref.fasta
+  
+  $samtools view -bF 4 all_sorted_bam > all_F_sorted_bam
+  
+  $samtools fasta all_F_sorted_bam > all_F_fasta
 
-5.  Calculate similarity between raw sequence, all_F_fasta and their own reverse-complement
+
+2. (optional) Calculate similarity between raw sequence, all_F_fasta and their own reverse-complement
   
   $python2 similarity.py all_F_fasta sim_txt
   
+  Note that: Python script similarity.py based on Levenshtein distance.
   
 
-• Process BLAST-based Alignment
-1. Subsample your target sequencing files F_fasta from raw filtered sequences all_F_fasta
+Process BLAST-based Alignment
+---
+
+3. Subsample your target sequencing files F_fasta from raw filtered sequences all_F_fasta
   
   $seqkit seq -m {min-len} -M {max-len} -w 0 all_F_fasta > F_fasta
   
   Note that: set the minimum or maximum of size range based on the project. The output F_fasta in each size range used for further alignment analysis.
 
-2. Blast the selected subsampled sequence file to the reference genome ref_fasta
-
-
-
-• Example in one size range
+4. Blast the selected subsampled sequence file to the reference genome ref_fasta
+  
+  Example in one size range:
   
   $makeblastdb -in ref.fasta -dbtype nucl
   
@@ -76,16 +96,17 @@ Usage
   
   $python2 RS.py F_fasta b1 L1-2
   
-  Note that: The number of alignment loop in specific length range based on the project. For each loop, get unmatched fragments in the previous alignment of the same HiFi read, on left or right sides for next alignment, in Python script with LS.py and RS.py, respectively.
+  Note that: the number of alignment loop in specific length range based on the project. For each loop, get unmatched fragments in the previous alignment of the same HiFi read, on left or right sides for next alignment, in Python script with LS.py and RS.py, respectively.
   
   ![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Alignments.png)
+  
 
+Visualize Alignments in Windows
+---
 
-
-• Visualize Alignments in Windows
 1. Creat work_directory Folder on Windows and place the b* alignment files into it.
-2. Open the Ref_T.xlsm and Query_T.xlsm template, and all b*, copy the id of reads from b1 file into the first column of Ref_T.xlsm and Query_T.xslm, and process the VLoopUp in the two templates.
-3. Copy the data from the Ref_T and Query_T without format into ref.xslm and query.xlsm, respectively. And then run the VBA code to discard the invalid data.
+2. Open the Ref_T.xlsm, Query_T.xlsm template and all b*. Copy the id of reads from b1 file into the first column of Ref_T.xlsm and Query_T.xlsm, and process the VLoopUp in the two templates.
+3. Copy the data from the Ref_T and Query_T without format, into ref.xslm and query.xlsm, respectively. And then run the VBA code to discard the invalid data.
 4. Set the filters in the ref.xlsm, conditional formatting the regions in different color.
 5. Calculate the ratio of specific rAAV configuration based on the color format configurations in the ref.xlsm.
 
@@ -99,3 +120,4 @@ Usage
 
 Publications
 ---
+
