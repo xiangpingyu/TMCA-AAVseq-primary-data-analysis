@@ -30,6 +30,8 @@ Usage
   
   Seqkit-tools: https://anaconda.org/bioconda/seqkit
 
+
+
 • Preprocessing
 1.	Subreads Output
   
@@ -50,6 +52,8 @@ Usage
 5.  Calculate similarity between raw sequence, all_F_fasta and their own reverse-complement
   
   $python2 similarity.py all_F_fasta sim_txt
+  
+  
 
 • Process BLAST-based Alignment
 1. Subsample your target sequencing files F_fasta from raw filtered sequences all_F_fasta
@@ -59,6 +63,8 @@ Usage
   Note that: set the minimum or maximum of size range based on the project. The output F_fasta in each size range used for further alignment analysis.
 
 2. Blast the selected subsampled sequence file to the reference genome ref_fasta
+
+
 
 • Example in one size range
   
@@ -75,6 +81,7 @@ Usage
   ![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Alignments.png)
 
 
+
 • Visualize Alignments in Windows
 1. Creat work_directory Folder on Windows and place the b* alignment files into it.
 2. Open the Ref_T.xlsm and Query_T.xlsm template, and all b*, copy the id of reads from b1 file into the first column of Ref_T.xlsm and Query_T.xslm, and process the VLoopUp in the two templates.
@@ -82,9 +89,12 @@ Usage
 4. Set the filters in the ref.xlsm, conditional formatting the regions in different color.
 5. Calculate the ratio of specific rAAV configuration based on the color format configurations in the ref.xlsm.
 
+
+
 • Example: cell value between 1 and 145 for ITR region.
   
   ![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Ref.xlsm.PNG)
+
 
 
 Publications
