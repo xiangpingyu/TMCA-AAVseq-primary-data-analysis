@@ -105,16 +105,22 @@ Visualize Alignments in Windows
 ---
 
 1. Creat work_directory Folder on Windows and place the b* alignment files into it.
+
 2. Open the Ref_T.xlsm, Query_T.xlsm template and all b*. Copy the id of reads from b1 file into the first column of Ref_T.xlsm and Query_T.xlsm, and process the VLoopUp in the two templates.
+
 3. Copy the data from the Ref_T and Query_T without format, into ref.xslm and query.xlsm, respectively. And then run the VBA code to discard the invalid data.
-4. Set the filters in the ref.xlsm, conditional formatting the regions in different color.
+
+4. Combine the ref.xlsm and query.xlsm into combined.xlsm. Set the filters for ref position in the combined.xlsm, combined with the continuity of query position (space < = 5bp, here), on conditional formatting the regions in different color.
+
+• Example: set cell value between 1 and 145 for L-ITR region and between 4322 and 4467 for R-ITR region in red to calculate different configurations, be sure with the confirmation of continuity of query position from query.xlsm.
+  e.g. 'SEQ - ITR - SEQ_rc'; 'ITR - SEQ - SEQ_rc - ITR'; 'ITR - SEQ_rc - SEQ - ITR - SEQ_rc - SEQ - ITR', etc.
+  
 5. Calculate the ratio of specific rAAV configuration based on the color format configurations in the ref.xlsm.
 
 
-
-• Example: cell value between 1 and 145 for ITR region.
+  ![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Structure_1.PNG)
   
-  ![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Ref.xlsm.PNG)
+  ![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Structure_2.PNG)
 
 
 
