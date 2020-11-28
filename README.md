@@ -51,7 +51,7 @@ Example in one size range
 • •$python2 RS.py F_fasta b1 L1-2
 
 • •Note that: The number of alignment loop in specific length range based on the project. For each loop, get unmatched fragments in the previous alignment of the same HiFi read, on left or right sides for next alignment, in Python script with LS.py and RS.py, respectively.
-
+![image](https://github.com/xiangpingyu/PBVmap/blob/main/images/Alignments.png)
 
 
 Visualize Alignments
