@@ -5,45 +5,52 @@
 Usage
 ---
 • Environment Setup
-  If rerun the same analysis, make sure that all the required files are in the working directory. Commands executed under the Linux terminal are prefixed with a “$” character.
+• • If rerun the same analysis, make sure that all the required files are in the working directory. Commands executed under the Linux terminal are prefixed with a “$” character.
+
 1.	Open the linux terminal and create a working directory
-  $mkdir work_directory
-  $cd work_directory
+• • $mkdir work_directory
+• • $cd work_directory
+
 2.	Download the raw sequencing files and database files
+
 3.  Software installation: 
-  Recalladaptor: https://github.com/PacificBiosciences/recalladapters
-  PacBio CCS Mode: https://github.com/PacificBiosciences/ccs
-  Minimap2: https://github.com/lh3/minimap2
-  Levenshtein.ratio: https://pypi.org/project/python-Levenshtein
-  Seqkit-tools: https://anaconda.org/bioconda/seqkit
+• • Recalladaptor: https://github.com/PacificBiosciences/recalladapters
+• • PacBio CCS Mode: https://github.com/PacificBiosciences/ccs
+• • Minimap2: https://github.com/lh3/minimap2
+• • Levenshtein.ratio: https://pypi.org/project/python-Levenshtein
+• • Seqkit-tools: https://anaconda.org/bioconda/seqkit
 
 • Preprocessing
 1.	Subreads Output
-  $recalladapters -s m*.subreads.xml -o output_subreads_bam --disableAdapterCorrection --adapters adapters.fasta
+• • $recalladapters -s m*.subreads.xml -o output_subreads_bam --disableAdapterCorrection --adapters adapters.fasta
+
 2.	HiFi Reads Output	 
-  $ccs --minPasses {3} --min-rq {0.99} --report-file output_txt output_subreads_bam outccs_bam	
+• • $ccs --minPasses {3} --min-rq {0.99} --report-file output_txt output_subreads_bam outccs_bam	
+
 3.	Convert bam to fasta format
-  $samtools view outccs_bam | awk '{OFS="\t"; print ">"$1"\n"$10}' - > outccs_fasta
+• • $samtools view outccs_bam | awk '{OFS="\t"; print ">"$1"\n"$10}' - > outccs_fasta
+
 4.	Length distribution of HiFi reads
-  $seqkit fx2tab -l -n -i -H outccs_fasta > ccslen_txt
+• • $seqkit fx2tab -l -n -i -H outccs_fasta > ccslen_txt
+
 5.  Calculate similarity between raw sequence, all_F_fasta and their own reverse-complement
-  $python2 similarity.py all_F_fasta sim_txt
+• • $python2 similarity.py all_F_fasta sim_txt
 
 • BLAST-based Alignment Loops
 1. Subsample your target sequencing files F_fasta from raw filtered sequences all_F_fasta
-  $seqkit seq -m {min-len} -M {max-len} -w 0 all_F_fasta > F_fasta
-  Note that: set the minimum or maximum of size range based on the project. The output F_fasta in each size range used for further alignment analysis.
+• • $seqkit seq -m {min-len} -M {max-len} -w 0 all_F_fasta > F_fasta
+• • Note that: set the minimum or maximum of size range based on the project. The output F_fasta in each size range used for further alignment analysis.
+
 2. Blast the selected subsampled sequence file to the reference genome ref_fasta
 
 Example in one size range
 ---
-  $makeblastdb -in ref.fasta -dbtype nucl
-  $blastn -db ref.fasta -query F_fasta -task blastn -outfmt 6 -max_hsps 1 -out b1
-  $python2 LS.py F_fasta b1 L1-1
-  $python2 RS.py F_fasta b1 L1-2
+• • $makeblastdb -in ref.fasta -dbtype nucl
+• • $blastn -db ref.fasta -query F_fasta -task blastn -outfmt 6 -max_hsps 1 -out b1
+• •$python2 LS.py F_fasta b1 L1-1
+• •$python2 RS.py F_fasta b1 L1-2
 
-  Note that: 
-  The number of alignment loop in specific length range based on the project. For each loop, get unmatched fragments in the previous alignment of the same HiFi read, on left or   right sides for next alignment, in Python script with LS.py and RS.py, respectively.
+• •Note that: The number of alignment loop in specific length range based on the project. For each loop, get unmatched fragments in the previous alignment of the same HiFi read, on left or right sides for next alignment, in Python script with LS.py and RS.py, respectively.
 
 
 
