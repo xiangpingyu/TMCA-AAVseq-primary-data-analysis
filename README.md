@@ -125,5 +125,9 @@ Visualize Alignments in Windows
 
 
 Publications
+Subgenomic satellite particle generation in recombinant AAV vectors results from DNA lesion/breakage and non-homologous end joining: https://www.biorxiv.org/content/10.1101/2020.08.01.230755v1
+Satellite subgenomic particles are key regulators of adeno-associated virus life cycle
+https://www.biorxiv.org/content/10.1101/2020.10.20.346957v1
+
 ---
 
