@@ -10,7 +10,7 @@ If rerun the same analysis, make sure that all the required files are in the wor
   
 ### Software installation
 
-Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages. These SMRT packages can be freely git cloned from       https://github.com/PacificBiosciences.  
+Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages.  These SMRT packages can be freely git cloned from       https://github.com/PacificBiosciences.  
   
 Get the SMRT_Link documents supports from (https://www.pacb.com/support/software-downloads/).
   
@@ -20,30 +20,31 @@ CCS: https://github.com/PacificBiosciences/ccs
   
 Minimap2: https://github.com/lh3/minimap2
   
-  • BLAST: https://anaconda.org/bioconda/blast
+BLAST: https://anaconda.org/bioconda/blast
   
-  • Seqkit-tools: https://anaconda.org/bioconda/seqkit
+Seqkit-tools: https://anaconda.org/bioconda/seqkit
   
-  • R: https://anaconda.org/r/r-base
+R: https://anaconda.org/r/r-base
 
   
 ### Procedure
 
-  • Download raw sequencing files and Run CCS and Minimap2 alignments to output Aligned reads. (Bash)
+(i) Download raw sequencing files and Run CCS and Minimap2 alignments to output Aligned reads. (Bash)
   
-      <Pipeline.sh> STEP 1~4
+      * <Pipeline.sh> STEP 1~4
 
-  • BLAST-Based Alignments. (Bash)
+(ii) BLAST-Based Alignments. (Bash)
+      ![](https://github.com/xiangpingyu/PBVmap/Picture/Loop.png)
   
       Note: Place ref.fasta, all.F.fasta, LS and RS in the same working directory.
   
       Firstly choose the loop number.
   
-      <Pipeline.sh>  STEP 5
+      * <Pipeline.sh>  STEP 5
       
-  • Alignments Visualization. (R scripts)
+(iii) Alignments Visualization. (R scripts)
   
-      <Plot.sh> STEP 1~4, rearrange query and ref b* output alignment. 
+      * <Plot.sh> STEP 1~4, rearrange query and ref b* output alignment. 
       
       OUTPUT: "u.csv"
       
@@ -51,9 +52,9 @@ Minimap2: https://github.com/lh3/minimap2
       
       (Optional): Processing a large dataset of qnew.csv\ rnew.csv into multiple files.
 
-  • Caculate the ratio of different molecule configuration. (R scripts)
+(iv) Caculate the ratio of different molecule configuration. (R scripts)
   
-      <Format.sh>
+      * <Format.sh>
       
       NOTE: Need to edit the important sites of rAAV virus genome.
       
