@@ -4,11 +4,11 @@
 
 Usage
 ---
-• Environment Setup
+# Environment Setup
   
   • If rerun the same analysis, make sure that all the required files are in the working directory. 
   
-• Software installation
+# Software installation
 
   • Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages. These SMRT packages can be freely git cloned from     https://github.com/PacificBiosciences.  Get the SMRT_Link documents supports from (https://www.pacb.com/support/software-downloads/).
   • recalladapters: https://github.com/PacificBiosciences/recalladapters
@@ -19,7 +19,7 @@ Usage
   • R: https://anaconda.org/r/r-base
 
   
-• Procedure
+# Procedure
 
   • Download raw sequencing files and Run CCS and Minimap2 alignments to output Aligned reads. (Bash)
       <Pipeline.sh> STEP1~4
@@ -43,7 +43,7 @@ Usage
 
 
 
-• Publications
+# Publications
 Subgenomic satellite particle generation in recombinant AAV vectors results from DNA lesion/breakage and non-homologous end joining: https://www.biorxiv.org/content/10.1101/2020.08.01.230755v1
 Satellite subgenomic particles are key regulators of adeno-associated virus life cycle
 https://www.biorxiv.org/content/10.1101/2020.10.20.346957v1
