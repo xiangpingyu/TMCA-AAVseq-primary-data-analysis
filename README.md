@@ -1,8 +1,8 @@
 # PBVmap
 ---
-• PBVmap is a pipeline to characterize the molecular state of AAV vector genomes on top of long reads mapping.
+  • PBVmap is a pipeline to characterize the molecular state of AAV vector genomes on top of long reads mapping.
 
-Usage
+# Usage
 ---
 # Environment Setup
   
@@ -10,7 +10,9 @@ Usage
   
 # Software installation
 
-  • Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages. These SMRT packages can be freely git cloned from       https://github.com/PacificBiosciences.  Get the SMRT_Link documents supports from (https://www.pacb.com/support/software-downloads/).
+  • Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages. These SMRT packages can be freely git cloned from       https://github.com/PacificBiosciences.  
+  
+  • Get the SMRT_Link documents supports from (https://www.pacb.com/support/software-downloads/).
   
   • recalladapters: https://github.com/PacificBiosciences/recalladapters
   
@@ -40,7 +42,6 @@ Usage
       <Pipeline.sh>  STEP 5
       
   • Alignments Visualization. (R scripts)
-    
   
       <Plot.sh> STEP 1~4, rearrange query and ref b* output alignment. 
       
@@ -64,10 +65,10 @@ Usage
 
 # Publications
 
-Subgenomic satellite particle generation in recombinant AAV vectors results from DNA lesion/breakage and non-homologous end joining: https://www.biorxiv.org/content/10.1101/2020.08.01.230755v1
+  • Subgenomic satellite particle generation in recombinant AAV vectors results from DNA lesion/breakage and non-homologous end joining:                    https://www.biorxiv.org/content/10.1101/2020.08.01.230755v1
 
-Satellite subgenomic particles are key regulators of adeno-associated virus life cycle:
-https://www.biorxiv.org/content/10.1101/2020.10.20.346957v1
+  • Satellite subgenomic particles are key regulators of adeno-associated virus life cycle:
+  https://www.biorxiv.org/content/10.1101/2020.10.20.346957v1
 
 ---
 
