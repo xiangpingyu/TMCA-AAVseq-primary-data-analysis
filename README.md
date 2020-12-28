@@ -1,24 +1,24 @@
 # PBVmap
 ---
-  • PBVmap is a pipeline to characterize the molecular state of AAV vector genomes on top of long reads mapping.
+PBVmap is a pipeline to characterize the molecular state of AAV vector genomes on top of long reads mapping.
 
-# Usage
+## Usage
 ---
-# Environment Setup
+### Environment Setup
   
-  • If rerun the same analysis, make sure that all the required files are in the working directory. 
+If rerun the same analysis, make sure that all the required files are in the working directory. 
   
-# Software installation
+### Software installation
 
-  • Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages. These SMRT packages can be freely git cloned from       https://github.com/PacificBiosciences.  
+Install anaconda (https://anaconda.org/anaconda/git) to perform the corresponding SMRT or R packages. These SMRT packages can be freely git cloned from       https://github.com/PacificBiosciences.  
   
-  • Get the SMRT_Link documents supports from (https://www.pacb.com/support/software-downloads/).
+Get the SMRT_Link documents supports from (https://www.pacb.com/support/software-downloads/).
   
-  • recalladapters: https://github.com/PacificBiosciences/recalladapters
+recalladapters: https://github.com/PacificBiosciences/recalladapters
   
-  • CCS: https://github.com/PacificBiosciences/ccs 
+CCS: https://github.com/PacificBiosciences/ccs 
   
-  • Minimap2: https://github.com/lh3/minimap2
+Minimap2: https://github.com/lh3/minimap2
   
   • BLAST: https://anaconda.org/bioconda/blast
   
@@ -27,7 +27,7 @@
   • R: https://anaconda.org/r/r-base
 
   
-# Procedure
+### Procedure
 
   • Download raw sequencing files and Run CCS and Minimap2 alignments to output Aligned reads. (Bash)
   
@@ -63,7 +63,7 @@
 
 
 
-# Publications
+### Publications
 
   • Subgenomic satellite particle generation in recombinant AAV vectors results from DNA lesion/breakage and non-homologous end joining:                    https://www.biorxiv.org/content/10.1101/2020.08.01.230755v1
 
