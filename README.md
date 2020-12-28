@@ -35,7 +35,7 @@ R: https://anaconda.org/r/r-base
 
 (ii) BLAST-Based Alignments. (Bash)
       ![github]
-      (https://github.com/xiangpingyu/PBVmap/raw/master/Picture/Loop.png)
+      (https://github.com/xiangpingyu/PBVmap/raw/master/Image/Mapping.jpg)
   
       Note: Place ref.fasta, all.F.fasta, LS and RS in the same working directory.
   
