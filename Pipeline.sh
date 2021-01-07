@@ -66,10 +66,8 @@ do
     blastn -db ${REF} -query L$i1$j -task blastn -outfmt 6 -max_hsps 1 -out b$i1$j;   
     let ja=$j*2-1    
     let jb=$j*2    
-    echo "LS"
-    python LS L$i1$j b$i1$j L$i$ja
-    echo "RS"
-    python RS L$i1$j b$i1$j L$i$jb
+    python LS.py L$i1$j b$i1$j L$i$ja
+    python RS.py L$i1$j b$i1$j L$i$jb
     fi
     done    
 done
