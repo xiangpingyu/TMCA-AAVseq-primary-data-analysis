@@ -13,7 +13,7 @@ library(dplyr)
 library(tidyr)
 
 ## STEP 1: Try to caculate the main molecule configurations of HiFi data. (#R)
-# setwd("../work_directory/t")
+# setwd("t/")
 u <- read.csv("u.csv")
 len <- read.csv("Flen.txt", sep="\t")
 
@@ -96,50 +96,51 @@ dim(mGDMnd)
 
 # setwd("../work_directory/t")
 u <- read.csv("u.csv")
-len <- read.csv("ccs3len.txt", sep="\t")
+len <- read.csv("Flen.txt", sep="\t")
+colnames(u)[1] <- "id"
 
 ## Size filtering: <- subset(u,{size filter setting})
 
 ## 0-1000 bp
-# uk01 <- subset(len,len[2] <= 1000 )
-# uk01 <- subset(u, u$id %in% uk01$X.id)
-# uk01[is.na(uk01)] <- ""
-# write.csv(uk01,"uk01.csv",col.names=T, row.names=F)
-# u <- read.csv("uk01.csv")
+uk01 <- subset(len,len[2] <= 1000 )
+uk01 <- subset(u, u$id %in% uk01$X.id)
+uk01[is.na(uk01)] <- ""
+write.csv(uk01,"uk01.csv",col.names=T, row.names=F)
+u <- read.csv("uk01.csv")
 
 ## 1000-2000 bp
-# uk12 <- subset(len,len[2] <= 2000 & len[2] > 1000 )
-# uk12 <- subset(u, u$id %in% uk12$X.id)
-# uk12[is.na(uk12)] <- ""
-# write.csv(uk12,"uk12.csv",col.names=T, row.names=F)
-# u <- read.csv("uk12.csv")
+uk12 <- subset(len,len[2] <= 2000 & len[2] > 1000 )
+uk12 <- subset(u, u$id %in% uk12$X.id)
+uk12[is.na(uk12)] <- ""
+write.csv(uk12,"uk12.csv",col.names=T, row.names=F)
+u <- read.csv("uk12.csv")
 
 ## 2000-3000 bp
-# uk23 <- subset(len,len[2] <= 3000 & len[2] > 2000)
-# uk23 <- subset(u, u$id %in% uk23$X.id)
-# uk23[is.na(uk23)] <- ""
-# write.csv(uk23,"uk23.csv",col.names=T, row.names=F)
-# u <- read.csv("uk23.csv")
+uk23 <- subset(len,len[2] <= 3000 & len[2] > 2000)
+uk23 <- subset(u, u$id %in% uk23$X.id)
+uk23[is.na(uk23)] <- ""
+write.csv(uk23,"uk23.csv",col.names=T, row.names=F)
+u <- read.csv("uk23.csv")
 
 ## 3000-4000 bp
-# uk34 <- subset(len,len[2] <= 4000 & len[2] > 3000)
-# uk34 <- subset(u, u$id %in% uk34$X.id)
-# uk34[is.na(uk34)] <- ""
-# write.csv(uk34,"uk34.csv",col.names=T, row.names=F)
-# u <- read.csv("uk34.csv")
+uk34 <- subset(len,len[2] <= 4000 & len[2] > 3000)
+uk34 <- subset(u, u$id %in% uk34$X.id)
+uk34[is.na(uk34)] <- ""
+write.csv(uk34,"uk34.csv",col.names=T, row.names=F)
+u <- read.csv("uk34.csv")
 
 ## 4000-5000 bp
-# uk45 <- subset(len,len[2] <= 5000 & len[2] > 4000)
-# uk45 <- subset(u, u$id %in% uk45$X.id)
-# uk45[is.na(uk45)] <- ""
-# write.csv(uk45,"uk45.csv",col.names=T, row.names=F)
-# u <- read.csv("uk45.csv")
+uk45 <- subset(len,len[2] <= 5000 & len[2] > 4000)
+uk45 <- subset(u, u$id %in% uk45$X.id)
+uk45[is.na(uk45)] <- ""
+write.csv(uk45,"uk45.csv",col.names=T, row.names=F)
+u <- read.csv("uk45.csv")
 
 ## 5000-6000 bp
-# uk56 <- subset(len,len[2] <= 6000 & len[2] > 5000)
-# uk56 <- subset(u, u$id %in% uk56$X.id)
-# uk56[is.na(uk56)] <- ""
-# write.csv(uk56,"uk56.csv",col.names=T, row.names=F)
-# u <- read.csv("uk56.csv")
+uk56 <- subset(len,len[2] <= 6000 & len[2] > 5000)
+uk56 <- subset(u, u$id %in% uk56$X.id)
+uk56[is.na(uk56)] <- ""
+write.csv(uk56,"uk56.csv",col.names=T, row.names=F)
+u <- read.csv("uk56.csv")
 
 
