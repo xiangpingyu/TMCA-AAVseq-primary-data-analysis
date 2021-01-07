@@ -5,7 +5,7 @@ import sys
 import os
 
 def usage():
-	print('Usage: python2 ano.py [seq] [E] [F3-1]')
+	print('Usage: python2 RS.py [seq] [E] [F3-1]')
 
 def main():
 	outf = open(sys.argv[3],'w')
