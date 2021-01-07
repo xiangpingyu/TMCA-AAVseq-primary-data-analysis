@@ -220,8 +220,8 @@ End Sub
 # setwd("t/")
 
 ## Place rnew.csv, qnew.csv in the "r" file fold.
-ur <- read.csv("rnew.csv")
-uq <- read.csv("qnew.csv")
+ur <- read.csv("./REF/rnew.csv")
+uq <- read.csv("./QUERY/qnew.csv")
 u <- bind_cols(ur, uq)
 u[is.na(u)] <- ""
 write.csv(u,"u.csv",col.names=T, row.names=F)
