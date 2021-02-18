@@ -43,25 +43,33 @@ If re-run the same analysis, make sure that all the required files are in the wo
       
       OUTPUT: "b*"
       
-(iii) Alignments Visualization. (#Bash, R and VBA)
+(iii) Alignments Rearrangement. (#Bash, R and VBA)
   
       * <Rearrange.sh> STEP 5~10, rearrange query&ref of "b*" output files.
       
-      NOTE that, need to discard blank cells in "*new.csv" with VBA code.
+      STEP 5, set work directory
+      STEP 6, all.F.fasta size distribution, "dlen.png" output.
+      STEP 7, convert b* to z*, the rearranged form.
+      STEP 8~10, process the rearranged form to "u.csv".
+   
+      NOTE that, STEP 9, discard blank cells in "*new.csv" with VBA code.
       
       OUTPUT: "u.csv"
       
       (Optional) Processing a large dataset of qnew.csv and rnew.csv into multiple files. (#Bash, R and VBA)
 
-(iv) Caculate the ratio of different molecule configuration. (#R scripts)
+(iv) Caculate the ratio of main molecule configuration. (#R scripts)
   
       * <Visualization.sh> STEP 11~14
+      NOTE that, if process wtAAV sequencing reads, update the Subgenome() and plot() functions.
       
-      NOTE that, 
       STEP 11, update format.csv with important sites of target, AAV virus genomes. (ITR, promoter, etc.)
-      STEP 12, <Subgenome() calculate main configurations, such as FULL, SBG, ICG, GDM.
-      STEP 13, subsample based on size and process their Subgenome().
-      STEP 14, generate Charts.
+      STEP 12, run Subgenome(), to calculate main configurations, such as FULL, SBG, ICG, GDM.
+      STEP 13, subsample based on size and run their Subgenome().
+      STEP 14, plots OUTPUT.
+      
+      OUTPUT: "plot.eps"
+
 
 
 ---
