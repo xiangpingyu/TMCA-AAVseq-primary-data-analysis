@@ -1,4 +1,4 @@
-# PBVmap
+# VMP-Seq
 ---
 A pipeline to characterize the molecule state of AAV genomes on top of long reads mapping.
 
@@ -27,48 +27,40 @@ If re-run the same analysis, make sure that all the required files are in the wo
 - R: https://anaconda.org/r/r-base
 
 ### Procedure
+（i) Preparation.sh
 
-(i) Download raw sequencing data and run CCS3 and Minimap2 alignments to output Aligned reads. (#Bash)
-  
-      * <Preparation.sh> STEP 1~3, output aligned all.F.fasta data.
+Check for Required Files: The script checks if specific files are present, which seem to be files output by Pacific Biosciences sequencing platforms. It checks for the presence of files like subreadset.xml, subreads.bam, etc., and terminates if they are missing.
 
-(ii) BLAST-Based Alignments. (#Bash)
-      ![Mapping](https://github.com/xiangpingyu/PBVmap/blob/main/Image/Mapping.jpg)
-  
-      Note that, please place ref.fasta, all.F.fasta, LS and RS in the working directory.
-  
-      Firstly, choose the loop number.
-  
-      * <Preparation.sh> STEP 4
-      
-      OUTPUT: "b*"
-      
-(iii) Alignments Rearrangement. (#Bash, R and VBA)
-  
-      * <Rearrange.sh> STEP 5~10, rearrange query&ref of "b*" output files.
-      
-      STEP 5, set work directory
-      STEP 6, all.F.fasta size distribution, "dlen.png" output.
-      STEP 7, convert b* to z*, the rearranged form.
-      STEP 8~10, process the rearranged form to "u.csv".
-   
-      NOTE that, STEP 9, discard blank cells in "*new.csv" with VBA code.
-      
-      OUTPUT: "u.csv"
-      
-      (Optional) Processing a large dataset of qnew.csv and rnew.csv into multiple files. (#Bash, R and VBA)
+HiFi Output Processing: The script performs adapter recall, which seems to be some kind of data cleanup. Following this, it performs a CCS (Circular Consensus Sequence) generation, which creates high-fidelity reads. Finally, it processes the output to get the sequences in FASTA format.
 
-(iv) Caculate the ratio of main molecule configuration. (#R scripts)
-  
-      * <Visualization.sh> STEP 11~14
-      NOTE that, if process wtAAV sequencing reads, update the Subgenome() and plot() functions.
+Minimap2 Alignments: The Minimap2 tool is used to align the HiFi reads to a reference genome. It generates various output files and does some additional processing with the samtools package.
+
+BLAST-Based Alignments: Using BLAST, the script performs DNA sequence alignments in a looped fashion. Two python scripts (LS and RS) seem to do further processing on the BLAST results. 
+
       
-      STEP 11, update format.csv with important sites of target, AAV virus genomes. (ITR, promoter, etc.)
-      STEP 12, run Subgenome(), to calculate main configurations, such as FULL, SBG, ICG, GDM.
-      STEP 13, subsample based on size and run their Subgenome().
-      STEP 14, plots OUTPUT.
-      
-      OUTPUT: "plot.eps"
+(ii) Rearrange.sh  
+
+Bash Script:
+
+Function process_file(): a series of operations that are performed on some BLAST results or some tabular data. 
+
+Main Execution Loop: go through a series of files with a specific naming convention and processes them depending on certain conditions. 
+
+Execute R Code: Finally, it executes an embedded R script.
+
+R Script:
+
+Data Visualization: A histogram is created from a file Flen.txt and saved as dlen.png.
+
+Data Processing: a series of functions and operations intended to process files in specific directories, merge their data, and then save combined results. 
+
+(iii) <Visualization.sh： Caculate the ratio of main molecule configuration.
+
+NOTE that, if process wtAAV sequencing reads, update the Subgenome() and plot() functions.
+
+Update format.csv with important sites of target, AAV virus genomes. (ITR, promoter, etc.)
+
+Subgenome(): calculate main configurations, such as FULL, SBG, ICG, GDM.
 
 
 
