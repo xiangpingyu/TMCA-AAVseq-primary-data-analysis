@@ -6,18 +6,22 @@
 
 # Constants
 NUM_THREADS=4    # Modify this for parallel processing capabilities
+NUM_LOOPS=5
 
-# STEP 1: Download and Organize Raw Sequencing Files
-# Check for required files
-if [[ ! -f *subreadset.xml || ! -f *subreads.bam || ! -f *subreads.bam.bai || ! -f *adapters.fasta || ! -f ref.fasta ]]; then
-    echo "Error: Not all required files are present."
-    exit 1
-fi
+# STEP 1: Check for required files
+REQUIRED_FILES=(*subreadset.xml *subreads.bam *subreads.bam.bai *adapters.fasta ref.fasta)
+
+for file in "${REQUIRED_FILES[@]}"; do
+    if [[ ! -f $file ]]; then
+        echo "Error: File $file is missing."
+        exit 1
+    fi
+done
 
 # Archive and create workspace
 tar -zcvf sequencing_files.tar.gz *
 mkdir -p work_directory
-cd work_directory
+cd work_directory || { echo "Failed to switch to work_directory."; exit 1; }
 
 # Setup file references
 DATA=$(ls ../*subreadset.xml)
@@ -29,30 +33,28 @@ echo "Adapter file: $ADAPTER"
 echo "Reference file: $REF"
 
 # STEP 2: HiFi Output
-recalladapters -s "$DATA" -o out_subread.bam --disableAdapterCorrection --adapters "$ADAPTER"
-ccs --minPasses 3 --min-rq 0.99 --report-file report.txt out_subread.bam outccs3.bam
+recalladapters -s "$DATA" -o out_subread.bam --disableAdapterCorrection --adapters "$ADAPTER" || exit 1
+ccs --minPasses 3 --min-rq 0.99 --report-file report.txt out_subread.bam outccs3.bam || exit 1
 samtools view outccs3.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > outccs3.fasta
 
 # STEP 3: Minimap2 Alignments
-minimap2 -d ref.min "$REF"
-minimap2 -ax map-pb ref.min outccs3.fasta > all.sam
-samtools sort -@ "$NUM_THREADS" -O bam -o all.sorted.bam all.sam
-samtools index all.sorted.bam
-samtools faidx "$REF"
-samtools view -bF 4 all.sorted.bam > all.F.sorted.bam
-samtools fasta all.F.sorted.bam > all.Ffasta
+minimap2 -d ref.min "$REF" || exit 1
+minimap2 -ax map-pb ref.min outccs3.fasta > all.sam || exit 1
+samtools sort -@ "$NUM_THREADS" -O bam -o all.sorted.bam all.sam || exit 1
+samtools index all.sorted.bam || exit 1
+samtools faidx "$REF" || exit 1
+samtools view -bF 4 all.sorted.bam > all.F.sorted.bam || exit 1
+samtools fasta all.F.sorted.bam > all.Ffasta || exit 1
 seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
 
 # STEP 4: BLAST-Based Alignments
 mkdir -p t
-cp LS RS "$REF" ./t
-cd t
-cp ../all.Ffasta L01
+cp LS RS "$REF" ./t || exit 1
+cd t || { echo "Failed to switch to directory t."; exit 1; }
 
-NUM_LOOPS=5
+cp ../all.F.fasta L01
+
 b=1
-
-# Calculate b
 for _ in $(seq 1 $((NUM_LOOPS-1))); do
     b=$((2*b))
 done
