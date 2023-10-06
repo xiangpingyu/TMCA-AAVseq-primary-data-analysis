@@ -1,51 +1,72 @@
 ## Process {b*} STEP 5 ~ 10
 ## Load R Libraries
+# List of libraries
+library_list <- c("ggplot2", "rJava", "xlsxjars", "readxl", "dplyr", "tidyr", 
+                  "reshape2", "png", "data.table", "ggpubr", "customLayout", 
+                  "gridExtra", "grid", "cowplot", "RColorBrewer")
+
+# Install any missing packages
+new_packages <- library_list[!(library_list %in% installed.packages()[,"Package"])]
+if(length(new_packages) > 0) install.packages(new_packages)
+
+# Load the libraries
+lapply(library_list, require, character.only = TRUE)
 
 ## STEP 5: Set R working PATH. (#R Script)
-# setwd("../Work_directory/")
-patho <- getwd()
-setwd(patho)
-dir.create("wtC") ## creat new filefold
-setwd(paste0(getwd(),"/","wtC","/"))
-paths <- getwd()
-names <- basename(getwd())
-setwd(paths)
-dir.create("t")
-setwd(path.expand("./t"))
-patht <- getwd()
-namet <- basename(getwd())
-setwd(patht)
-dir.create("Format")
-setwd(path.expand("./Format"))
-pathf <- getwd()
-setwd(pathf)
-dir.create("QUERY")
-setwd(path.expand("./QUERY"))
-pathQ <- getwd()
-setwd(pathf)
-dir.create("REF")
-setwd(path.expand("./REF"))
-pathR <- getwd()
-setwd(patho)
 ## Note that, place STEP 4 {b*} and Flen.txt in the patht fold.
+patht <- getwd()
+pathf <- file.path(patht, "Format")
+pathQ <- file.path(patht, "QUERY")
+pathR <- file.path(patht, "REF")
+
 
 ## STEP 6: Size distribution, load Flen.txt in the R working directory. (#R Script)
 setwd(patht)
-dlen <- read.csv("Flen.txt",sep="")
-names(dlen) <- c("id","len")
-as.numeric(dlen$len)
-g <- ggplot(data=dlen,aes(x=len)) +
-    geom_histogram(bins=diff(range(dlen$len)/200)) +
+# Read data
+dlen <- read.csv(file.path(patht, "Flen.txt"), sep = "")
+names(dlen) <- c("id", "len")
+
+# Convert 'len' column to numeric and check for NA values
+dlen$len_numeric <- as.numeric(as.character(dlen$len))
+
+# Identify rows where conversion failed
+problematic_rows <- dlen[is.na(dlen$len_numeric), ]
+
+# Print the problematic rows
+if (nrow(problematic_rows) > 0) {
+    print("The following rows have problematic 'len' values:")
+    print(problematic_rows)
+} else {
+    print("No problematic values detected.")
+}
+
+# For the purpose of plotting, we'll drop these problematic rows
+dlen <- dlen[!is.na(dlen$len_numeric), ]
+
+# Plotting
+num_bins <- as.integer(diff(range(dlen$len_numeric)) / 200)
+g <- ggplot(data = dlen, aes(x = len_numeric)) +
+    geom_histogram(bins = num_bins) +
     theme_classic() +
     ggtitle("Len")
 
-## plot output
-ggsave("dlen.png",width=25, height=10)
+# Save plot
+ggsave(file.path(t_path, "dlen.png"), width = 25, height = 10, plot = g)
+
 
 ## STEP 7: Convert {b*} data from step 4. (#Bash)
-cd {patht} # cd "C://Users//YXPin//ADD//bio_data//pacbio//SMRT//pb-data//PB_RUN//Work_directory//wtE//t"
+#!/bin/bash
+
+# Rename files as per requirement (optional)
+# for file in b*-*
+# do
+#     mv "$file" "${file/-/}"
+# done
+
+cd {patht}  
 # read -p "number of loop：" num;
 let num=5
+
 ## NOTE that, if $num=5, b0 ~ b4, $c=16
 c=1
 let num1=$num-1
@@ -158,6 +179,7 @@ for ((i=0; i<=$num1; i ++))
 find . -name "*" -type f -size 0c | xargs -n 1 rm -f
 echo "done"
 
+
 ## STEP 8: Rearrange {z*}. (#R Scripts)
 setwd(patht)
 file=list.files(getwd(),pattern="z{1}")
@@ -202,6 +224,7 @@ rnew[is.na(rnew)] <- ""
 setwd(patht)
 write.csv(rnew,"rnew.csv",col.names=T, row.names=F)
 
+
 ## STEP 9: Discard blank cells in qnew.cdv and rnew.csv with VBA code, respectively. (#VBA)
 ## Run 'VBA.xlsm' code
 # '''------------------------------------------------------------------------------------'''
@@ -225,6 +248,7 @@ write.csv(rnew,"rnew.csv",col.names=T, row.names=F)
 # End Sub
 # '''------------------------------------------------------------------------------------'''
 
+
 ## STEP 10:  Combine rnew.csv and qnew.csv into u.csv.  (#R)
 setwd(patht)
 ur <- read.csv("rnew.csv")
@@ -234,7 +258,6 @@ u[is.na(u)] <- ""
 write.csv(u,"u.csv",col.names=T, row.names=F)
 ## Note that, set 1st col name in u.csv to id.
 '''------------------------------------------------------------------------------------'''
-
 
 
 ### (Optional STEP) Processing a large dataset of qnew.csv and rnew.csv into multiple files. (#Bash, R and VBA)
