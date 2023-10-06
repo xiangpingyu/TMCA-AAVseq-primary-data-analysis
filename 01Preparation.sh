@@ -3,6 +3,7 @@
 # Author: Sophia Yu
 # Email: xyu@aavlab.com
 
+
 # Define working directories and file names
 WORK_DIR="work_directory"
 mkdir -p ${WORK_DIR}
@@ -35,31 +36,46 @@ seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
 
 #  BLAST-Based Alignments
 # Ensure ref.fasta, all.F.fasta, LS, and RS are in the working directory
+
+#!/bin/bash
+
+# Constants and initial setup
 BLAST_DIR="t"
-mkdir -p ${BLAST_DIR}
-cp LS RS ${REF} ./${BLAST_DIR}
-cd ${BLAST_DIR}
-cp ../all.F.fasta L01
+mkdir -p "${BLAST_DIR}"
+cp LS RS "${REF}" "${BLAST_DIR}"
+cd "${BLAST_DIR}"
+cp ../all.Fasta L01
 
-# Setup BLAST alignment loop
+# Set the number of BLAST alignment loops
 let NUM_LOOPS=5
-let BLAST_FACTOR=2**$((NUM_LOOPS-1))
-echo "b_index $BLAST_FACTOR"
+# Uncomment the line below if user input is desired:
+# read -p "Enter the number of loops: " NUM_LOOPS
 
-makeblastdb -in ${REF} -dbtype nucl
+let BLAST_INDEX=$((2**($NUM_LOOPS-1)))
+echo "Blast Index: $BLAST_INDEX"
 
-for i in $(seq 1 $NUM_LOOPS); do
-    for j in $(seq 1 $BLAST_FACTOR); do
-        if [ -f "./L$((i-1))$j" ]; then
-            blastn -db ${REF} -query L$((i-1))$j -task blastn -outfmt 6 -max_hsps 1 -out b$((i-1))$j
-            echo "Processing LS"
-            python2 LS L$((i-1))$j b$((i-1))$j L${i}$((j*2-1))
-            echo "Processing RS"
-            python2 RS L$((i-1))$j b$((i-1))$j L${i}$((j*2))
+# Create BLAST database from the reference
+makeblastdb -in "${REF}" -dbtype nucl
+
+# BLAST alignment and post-processing
+for i in $(seq 0 $((NUM_LOOPS-1))); do
+    for j in $(seq 1 $BLAST_INDEX); do
+        INPUT_FILE="./L${i}${j}"
+        
+        if [ -f "$INPUT_FILE" ]; then
+            # Execute BLAST alignment
+            blastn -db "${REF}" -query "$INPUT_FILE" -task blastn -outfmt 6 -max_hsps 1 -out b${i}${j}
+            
+            # Process BLAST outputs using Python scripts
+            echo "Processing LS for: $INPUT_FILE"
+            python2 LS "$INPUT_FILE" b${i}${j} L$((i+1))$((j*2-1))
+            
+            echo "Processing RS for: $INPUT_FILE"
+            python2 RS "$INPUT_FILE" b${i}${j} L$((i+1))$((j*2))
         fi
     done    
 done
-echo "BLAST alignment completed"
 
-# Archive results
+# Notification and result archiving
+echo "BLAST alignment completed."
 zip -r t.zip b*
