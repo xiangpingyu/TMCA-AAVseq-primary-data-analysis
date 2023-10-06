@@ -1,82 +1,65 @@
 #!/bin/sh
 
-# Metadata
-## Author: Sophia Yu
-## Email: xyu@aavlab.com
+# Author: Sophia Yu
+# Email: xyu@aavlab.com
 
-# Constants
-NUM_THREADS=4    # Modify this for parallel processing capabilities
-NUM_LOOPS=5
+# Define working directories and file names
+WORK_DIR="work_directory"
+mkdir -p ${WORK_DIR}
+cd ${WORK_DIR}
 
-# STEP 1: Check for required files
-REQUIRED_FILES=(*subreadset.xml *subreads.bam *subreads.bam.bai *adapters.fasta ref.fasta)
+DATA=*.subreadset.xml
+REF=ref.fasta
+ADAPTER=*.adapters.fasta
 
-for file in "${REQUIRED_FILES[@]}"; do
-    if [[ ! -f $file ]]; then
-        echo "Error: File $file is missing."
-        exit 1
-    fi
-done
+OUTPUT_BAM="out.subreads.bam"
+OUTPUT_CCS="outccs3.bam"
+OUTPUT_FASTA="outccs3.fasta"
 
-# Archive and create workspace
-tar -zcvf sequencing_files.tar.gz *
-mkdir -p work_directory
-cd work_directory || { echo "Failed to switch to work_directory."; exit 1; }
+#  HiFi Output
+recalladapters -s ${DATA} -o ${OUTPUT_BAM} --disableAdapterCorrection --adapters ${ADAPTER}
+ccs --minPasses 3 --min-rq 0.99 --report-file report.txt ${OUTPUT_BAM} ${OUTPUT_CCS}
+samtools view ${OUTPUT_CCS} | awk '{OFS="\t"; print ">"$1"\n"$10}' > ${OUTPUT_FASTA}
 
-# Setup file references
-DATA=$(ls ../*subreadset.xml)
-ADAPTER=$(ls ../*adapters.fasta)
-REF=../ref.fasta
-
-echo "Data file: $DATA"
-echo "Adapter file: $ADAPTER"
-echo "Reference file: $REF"
-
-# STEP 2: HiFi Output
-recalladapters -s "$DATA" -o out_subread.bam --disableAdapterCorrection --adapters "$ADAPTER" || exit 1
-ccs --minPasses 3 --min-rq 0.99 --report-file report.txt out_subread.bam outccs3.bam || exit 1
-samtools view outccs3.bam | awk '{OFS="\t"; print ">"$1"\n"$10}' > outccs3.fasta
-
-# STEP 3: Minimap2 Alignments
-minimap2 -d ref.min "$REF" || exit 1
-minimap2 -ax map-pb ref.min outccs3.fasta > all.sam || exit 1
-samtools sort -@ "$NUM_THREADS" -O bam -o all.sorted.bam all.sam || exit 1
-samtools index all.sorted.bam || exit 1
-samtools faidx "$REF" || exit 1
-samtools view -bF 4 all.sorted.bam > all.F.sorted.bam || exit 1
-samtools fasta all.F.sorted.bam > all.Ffasta || exit 1
+#  Minimap2 Alignments
+minimap2 -d ref.min ${REF}
+minimap2 -ax map-pb ref.min outccs3.fasta > all.sam
+samtools sort -@ 4 -O bam -o all.sorted.bam all.sam
+samtools index all.sorted.bam
+samtools faidx ${REF}
+samtools view -bF 4 all.sorted.bam > all.F.sorted.bam
+samtools fasta all.F.sorted.bam > all.F.fasta
 seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
+seqkit seq -m 1000 -M 2000 -w 0 all.F.fasta > t/12/F 
+seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
 
-# STEP 4: BLAST-Based Alignments
-mkdir -p t
-cp LS RS "$REF" ./t || exit 1
-cd t || { echo "Failed to switch to directory t."; exit 1; }
-
+#  BLAST-Based Alignments
+# Ensure ref.fasta, all.F.fasta, LS, and RS are in the working directory
+BLAST_DIR="t"
+mkdir -p ${BLAST_DIR}
+cp LS RS ${REF} ./${BLAST_DIR}
+cd ${BLAST_DIR}
 cp ../all.F.fasta L01
 
-b=1
-for _ in $(seq 1 $((NUM_LOOPS-1))); do
-    b=$((2*b))
-done
+# Setup BLAST alignment loop
+let NUM_LOOPS=5
+let BLAST_FACTOR=2**$((NUM_LOOPS-1))
+echo "b_index $BLAST_FACTOR"
 
-echo "b_index $b"
-makeblastdb -in "$REF" -dbtype nucl
+makeblastdb -in ${REF} -dbtype nucl
 
-# Loop through BLAST alignments
 for i in $(seq 1 $NUM_LOOPS); do
-    prev_i=$((i-1))
-    for j in $(seq 1 $b); do
-        if [ -f "./L$prev_i$j" ]; then
-            blastn -db "$REF" -query L$prev_i$j -task blastn -outfmt 6 -max_hsps 1 -out b$prev_i$j
-
-            ja=$((j*2-1))
-            jb=$((j*2))
-
-            python2 LS L$prev_i$j b$prev_i$j L$i$ja
-            python2 RS L$prev_i$j b$prev_i$j L$i$jb
+    for j in $(seq 1 $BLAST_FACTOR); do
+        if [ -f "./L$((i-1))$j" ]; then
+            blastn -db ${REF} -query L$((i-1))$j -task blastn -outfmt 6 -max_hsps 1 -out b$((i-1))$j
+            echo "Processing LS"
+            python2 LS L$((i-1))$j b$((i-1))$j L${i}$((j*2-1))
+            echo "Processing RS"
+            python2 RS L$((i-1))$j b$((i-1))$j L${i}$((j*2))
         fi
-    done
+    done    
 done
+echo "BLAST alignment completed"
 
-echo "BLAST alignment done"
+# Archive results
 zip -r t.zip b*
