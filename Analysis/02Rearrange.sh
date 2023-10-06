@@ -225,28 +225,8 @@ setwd(patht)
 write.csv(rnew,"rnew.csv",col.names=T, row.names=F)
 
 
-## STEP 9: Discard blank cells in qnew.cdv and rnew.csv with VBA code, respectively. (#VBA)
+## STEP 9:  Discard blank cells in qnew.cdv and rnew.csv with VBA code, respectively. (#VBA)
 ## Run 'VBA.xlsm' code
-# '''------------------------------------------------------------------------------------'''
-# Sub test()
-
-#     Dim Path As String
-#     Dim File As String
-#     Dim WB As Workbook
-#     Application.ScreenUpdating = False
-#     Application.EnableEvents = False
-#     Path = "C:/Users/YXPin/ADD/bio_data/pacbio/SMRT/pb-data/PB_RUN/Work_directory/wtC/t/"
-#     File = Dir(Path & "*new*.csv")  
-#     Do While File <> ""
-#         Set WB = Workbooks.Open(Path & File)
-#         Worksheets(1).Range("b2:bk1048576").SpecialCells(xlCellTypeBlanks).Delete Shift:=xlToLeft
-#         File = Dir
-#     Loop
-#     Application.ScreenUpdating = True
-#     Application.EnableEvents = True
-
-# End Sub
-# '''------------------------------------------------------------------------------------'''
 
 
 ## STEP 10:  Combine rnew.csv and qnew.csv into u.csv.  (#R)
@@ -258,39 +238,5 @@ u[is.na(u)] <- ""
 write.csv(u,"u.csv",col.names=T, row.names=F)
 ## Note that, set 1st col name in u.csv to id.
 '''------------------------------------------------------------------------------------'''
-
-
-### (Optional STEP) Processing a large dataset of qnew.csv and rnew.csv into multiple files. (#Bash, R and VBA)
-
-# setwd(pathQ)
-# python qSplit.py
-# setwd(pathR)
-# python rSplit.py
-
-# ## Discard blank cells in *new*.csv. (#VBA)
-## Run VBA.xlsm
-
-# ## recombine qnew_* and rnew_*.    (#R)
-# qn1 <- read.csv("qnew_1.csv")
-# qn2 <- read.csv("qnew_2.csv")
-# qn3 <- read.csv("qnew_3.csv")
-# qn4 <- read.csv("qnew_4.csv")
-# uqnew <- rbind(qn1,qn2,qn3,qn4)
-# setwd(patht)
-# write.csv(uqnew,"uqnew.csv",col.names=T, row.names=F)
-# rn1 <- read.csv("rnew_1.csv")
-# rn2 <- read.csv("rnew_2.csv")
-# rn3 <- read.csv("rnew_3.csv")
-# rn4 <- read.csv("rnew_4.csv")
-# urnew <- rbind(rn1,rn2,rn3,rn4)
-# setwd(patht)
-# write.csv(urnew,"urnew.csv",col.names=T, row.names=F)
-# setwd(patht)
-# ur <- read.csv("urnew.csv")
-# uq <- read.csv("uqnew.csv")
-# u <- bind_cols(ur, uq)
-# u[is.na(u)] <- ""
-# write.csv(u,"u.csv",col.names=T, row.names=F)
-# ## OUTPUT: u.csv
 
 
