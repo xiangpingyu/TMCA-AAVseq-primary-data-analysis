@@ -1,4 +1,4 @@
-## Process {b*} STEP 5 ~ 10
+## Process {b*}  
 ## Load R Libraries
 # List of libraries
 library_list <- c("ggplot2", "rJava", "xlsxjars", "readxl", "dplyr", "tidyr", 
@@ -12,14 +12,14 @@ if(length(new_packages) > 0) install.packages(new_packages)
 # Load the libraries
 lapply(library_list, require, character.only = TRUE)
 
-## STEP 5: Set R working PATH. (#R Script)
+## Set R working PATH. (#R Script)
 ## Note that, place STEP 4 {b*} and Flen.txt in the patht fold.
 patht <- getwd()
 pathf <- file.path(patht, "Format")
 pathQ <- file.path(patht, "QUERY")
 pathR <- file.path(patht, "REF")
 
-## STEP 6: Size distribution, load Flen.txt in the R working directory. (#R Script)
+## Size distribution, load Flen.txt in the R working directory. (#R Script)
 setwd(patht)
 # Read data
 dlen <- read.csv(file.path(patht, "Flen.txt"), sep = "")
@@ -29,20 +29,11 @@ g <- ggplot(data=dlen,aes(x=len)) +
     geom_histogram(bins=diff(range(dlen$len)/200)) +
     theme_classic() +
     ggtitle("Len")
-
-## plot output
 ggsave("dlen.png",width=25, height=10)
 
-## STEP 7: Rearrange b*
+## Process to earrange b*, then get the u.csv, for 03Visualization.
+python 2_1* && python 2_2* && python 2_3* && python 2_4*
 
-## STEP 8:  Combine rnew.csv and qnew.csv into u.csv.  (#R)
-setwd(patht)
-ur <- read.csv("rnew.csv")
-uq <- read.csv("qnew.csv")
-u <- bind_cols(ur, uq)
-u[is.na(u)] <- ""
-write.csv(u,"u.csv",col.names=T, row.names=F)
-## Note that, set 1st col name in u.csv to id.
 '''------------------------------------------------------------------------------------'''
 
 
