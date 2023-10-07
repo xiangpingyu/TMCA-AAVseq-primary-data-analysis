@@ -24,38 +24,18 @@ pathR <- file.path(patht, "REF")
 setwd(patht)
 # Read data
 dlen <- read.csv(file.path(patht, "Flen.txt"), sep = "")
-names(dlen) <- c("id", "len")
-
-# Convert 'len' column to numeric and check for NA values
-dlen$len_numeric <- as.numeric(as.character(dlen$len))
-
-# Identify rows where conversion failed
-problematic_rows <- dlen[is.na(dlen$len_numeric), ]
-
-# Print the problematic rows
-if (nrow(problematic_rows) > 0) {
-    print("The following rows have problematic 'len' values:")
-    print(problematic_rows)
-} else {
-    print("No problematic values detected.")
-}
-
-# For the purpose of plotting, we'll drop these problematic rows
-dlen <- dlen[!is.na(dlen$len_numeric), ]
-
-# Plotting
-num_bins <- as.integer(diff(range(dlen$len_numeric)) / 200)
-g <- ggplot(data = dlen, aes(x = len_numeric)) +
-    geom_histogram(bins = num_bins) +
+names(dlen) <- c("id","len")
+as.numeric(dlen$len)
+g <- ggplot(data=dlen,aes(x=len)) +
+    geom_histogram(bins=diff(range(dlen$len)/200)) +
     theme_classic() +
     ggtitle("Len")
 
-# Save plot
-ggsave(file.path(t_path, "dlen.png"), width = 25, height = 10, plot = g)
-
+## plot output
+ggsave("dlen.png",width=25, height=10)
 
 ## STEP 7: Convert {b*} data from step 4. (#Bash)
-#!/bin/bash
+## bash qstart_sorted_qcom.py
 
 # Rename files as per requirement (optional)
 # for file in b*-*
