@@ -35,17 +35,6 @@ Minimap2 Alignments: HiFi reads are aligned to a reference genome using Minimap2
 BLAST-Based Alignments: BLAST is used to perform DNA sequence alignments in a looped fashion. The LS and RS Python scripts further process the BLAST results.
 
 #### (02)Rearrange.sh
-"Bash Script":
-
-Function process_file(): A series of operations is applied to BLAST results or tabular data.
-
-Main Execution Loop: Files with a specific naming convention are processed based on certain conditions.
-
-Execute R Code: An embedded R script is executed.
-
-"R Script":
-
-Data Visualization: A histogram is created from the Flen.txt file and saved as dlen.png.
 
 Data Processing: A series of functions and operations process files in specific directories, merge their data, and save combined results.
 
