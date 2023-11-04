@@ -32,7 +32,9 @@ g <- ggplot(data=dlen,aes(x=len)) +
 ggsave("dlen.png",width=25, height=10)
 
 ## Process to earrange b*, then get the u.csv, for 03Visualization.
-python 2_1* && python 2_2* && python 2_3* && python 2_4*
+python 2_1* && python 2_2* && python 2_3* 
+# then output the uqnew.csv and urnew.csv，"tab delimited"
+python 2_4*
 
 '''------------------------------------------------------------------------------------'''
 
