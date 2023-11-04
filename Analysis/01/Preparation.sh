@@ -50,33 +50,5 @@ cp ../all.Fasta L01
 let NUM_LOOPS=5
 # Uncomment the line below if user input is desired:
 # read -p "Enter the number of loops: " NUM_LOOPS
+# run  blast.sh
 
-let BLAST_INDEX=$((2**($NUM_LOOPS-1)))
-echo "Blast Index: $BLAST_INDEX"
-
-# Create BLAST database from the reference
-makeblastdb -in "${REF}" -dbtype nucl
-
-# BLAST alignment and post-processing
-for i in $(seq 1 $((NUM_LOOPS-1))); do
-    for j in $(seq 1 $BLAST_INDEX); do
-        INPUT_FILE="./L${i}${j}"
-
-        if [ -f "$INPUT_FILE" ]; then
-            # Execute BLAST alignment
-            blastn -db "${REF}" -query "$INPUT_FILE" -task blastn -outfmt 6 -max_hsps 1 -out b${i}${j}
-
-            # Process BLAST outputs using Python scripts
-            echo "Processing LS for: $INPUT_FILE"
-            python2 LS "$INPUT_FILE" b${i}${j} L$((i+1))$((j*2-1))
-
-            echo "Processing RS for: $INPUT_FILE"
-            python2 RS "$INPUT_FILE" b${i}${j} L$((i+1))$((j*2))
-        fi
-    done    
-done
-
-
-# Notification and result archiving
-echo "BLAST alignment completed."
-zip -r t.zip b*
