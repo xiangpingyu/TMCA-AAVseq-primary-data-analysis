@@ -35,4 +35,7 @@ df = df.applymap(process_cell)
 
 # 将新的DataFrame保存到新的CSV文件中
 output_file = 'uqnew.csv'
+
+df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+
 df.to_csv(output_file, sep='\t', index=False)  # 保存为制表符分隔的文件
