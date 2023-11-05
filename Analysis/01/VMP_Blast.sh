@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ## BLAST-Based Alignments
-## Place ref.fasta, all.F.fasta, LS, and RS are in the "t" working directory
+## Place ref.fasta, all.F.fasta, Flen.txt, LS.py, and RS.py are in the "t" working directory
 
 ## Constants and initial setup
 BLAST_DIR="t"
