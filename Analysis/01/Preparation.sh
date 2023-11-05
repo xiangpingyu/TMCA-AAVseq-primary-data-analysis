@@ -31,24 +31,22 @@ samtools faidx ${REF}
 samtools view -bF 4 all.sorted.bam > all.F.sorted.bam
 samtools fasta all.F.sorted.bam > all.F.fasta
 seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
-seqkit seq -m 1000 -M 2000 -w 0 all.F.fasta > t/12/F 
-seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
+#seqkit seq -m 1000 -M 2000 -w 0 all.F.fasta > t/12/F 
+#seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
 
 #  BLAST-Based Alignments
-# Ensure ref.fasta, all.F.fasta, LS, and RS are in the working directory
-
-#!/bin/bash
+# Ensure ref.fasta, all.F.fasta, LS, and RS are in the "t" working directory
 
 # Constants and initial setup
 BLAST_DIR="t"
 mkdir -p "${BLAST_DIR}"
 cp LS RS "${REF}" "${BLAST_DIR}"
 cd "${BLAST_DIR}"
-cp ../all.Fasta L01
+cp ../all.F.fasta L01
 
 # Set the number of BLAST alignment loops
 let NUM_LOOPS=5
 # Uncomment the line below if user input is desired:
 # read -p "Enter the number of loops: " NUM_LOOPS
-# run  blast.sh
+# run  VMP_blast.sh
 
