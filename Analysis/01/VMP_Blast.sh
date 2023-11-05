@@ -31,7 +31,7 @@ python RS.py L31.fasta b31 L42.fasta
 blastn -db ref.fasta -query L32.fasta -task blastn -outfmt 6 -max_hsps 1 -out b32
 python LS.py L32.fasta b32 L43.fasta
 python RS.py L32.fasta b32 L44.fasta
-blastn -db ref.fasta -query L33 -task blastn -outfmt 6 -max_hsps 1 -out b33
+blastn -db ref.fasta -query L33.fasta -task blastn -outfmt 6 -max_hsps 1 -out b33
 python LS.py L33.fasta b33 L45.fasta
 python RS.py L33.fasta b33 L46.fasta
 blastn -db ref.fasta -query L34.fasta -task blastn -outfmt 6 -max_hsps 1 -out b34
