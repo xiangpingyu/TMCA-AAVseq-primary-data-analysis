@@ -3,7 +3,7 @@
 
 python 2_1* && python 2_2* && python 2_3* 
 
-### "Delimited-Space" uqnew.csv and urnew.csv，and then run
+### "Delimiters: Space" uqnew.csv and urnew.csv，and then run
 python 2_4*
 
 
