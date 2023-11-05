@@ -1,15 +1,15 @@
 ## Process {b*}  
 ## Load R Libraries
-# List of libraries
+## List of libraries
 library_list <- c("ggplot2", "rJava", "xlsxjars", "readxl", "dplyr", "tidyr", 
                   "reshape2", "png", "data.table", "ggpubr", "customLayout", 
                   "gridExtra", "grid", "cowplot", "RColorBrewer")
 
-# Install any missing packages
+## Install any missing packages
 new_packages <- library_list[!(library_list %in% installed.packages()[,"Package"])]
 if(length(new_packages) > 0) install.packages(new_packages)
 
-# Load the libraries
+## Load the libraries
 lapply(library_list, require, character.only = TRUE)
 
 ## Set R working PATH. (#R Script)
@@ -18,7 +18,7 @@ patht <- getwd()
 ## Size distribution, load Flen.txt in the R working directory. (#R Script)
 setwd(patht)
 
-# Read data
+## Read data
 dlen <- read.csv(file.path(patht, "Flen.txt"), sep = "")
 names(dlen) <- c("id","len")
 as.numeric(dlen$len)
@@ -31,7 +31,7 @@ ggsave("dlen.png",width=25, height=10)
 ## Process to earrange b*, then get the u.csv, for 03Visualization.
 python 2_1* && python 2_2* && python 2_3* 
 
-# then output the uqnew.csv and urnew.csv，"tab delimited" u.csv
+## then output the uqnew.csv and urnew.csv，"tab delimited" u.csv
 python 2_4*
 
 '''------------------------------------------------------------------------------------'''
