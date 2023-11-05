@@ -34,19 +34,5 @@ seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
 #seqkit seq -m 1000 -M 2000 -w 0 all.F.fasta > t/12/F 
 #seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
 
-## BLAST-Based Alignments
-## Ensure ref.fasta, all.F.fasta, LS, and RS are in the "t" working directory
 
-## Constants and initial setup
-BLAST_DIR="t"
-mkdir -p "${BLAST_DIR}"
-cp LS RS "${REF}" "${BLAST_DIR}"
-cd "${BLAST_DIR}"
-cp ../all.F.fasta L01.fasta
-
-## Set the number of BLAST alignment loops
-let NUM_LOOPS=5
-## Uncomment the line below if user input is desired:
-## read -p "Enter the number of loops: " NUM_LOOPS
-## run  VMP_blast.sh
 
