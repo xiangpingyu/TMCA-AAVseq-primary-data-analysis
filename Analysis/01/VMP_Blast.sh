@@ -4,11 +4,7 @@
 ## Place ref.fasta, all.F.fasta, Flen.txt, LS.py, and RS.py are in the "t" working directory
 
 ## Constants and initial setup
-BLAST_DIR="t"
-mkdir -p "${BLAST_DIR}"
-cp LS RS "${REF}" "${BLAST_DIR}"
-cd "${BLAST_DIR}"
-cp ../all.F.fasta L01.fasta
+cp all.F.fasta L01.fasta
 
 ## Set the number of BLAST alignment loops
 let NUM_LOOPS=5
