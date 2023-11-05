@@ -1,3 +1,18 @@
+## BLAST-Based Alignments
+## Ensure ref.fasta, all.F.fasta, LS, and RS are in the "t" working directory
+
+## Constants and initial setup
+BLAST_DIR="t"
+mkdir -p "${BLAST_DIR}"
+cp LS RS "${REF}" "${BLAST_DIR}"
+cd "${BLAST_DIR}"
+cp ../all.F.fasta L01.fasta
+
+## Set the number of BLAST alignment loops
+let NUM_LOOPS=5
+## Uncomment the line below if user input is desired:
+## read -p "Enter the number of loops: " NUM_LOOPS
+
 #blast loop in the path where is your sequencing filtered reads and get the match site between ccs reads and reference genome {b*}.
 makeblastdb -in ref.fasta -dbtype nucl
 #1st loop
