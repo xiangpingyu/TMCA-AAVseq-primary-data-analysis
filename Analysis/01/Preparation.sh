@@ -34,8 +34,7 @@ samtools fasta all.F.sorted.bam > all.F.fasta
 ## blast preparation
 cp all.F.fasta L01.fasta
 makeblastdb -in ref.fasta -dbtype nucl
-#1st loop
-blastn -db ref.fasta -query L01.fasta -task blastn -outfmt 6 -max_hsps 1 -out b1
+python VMP_blast.py
 
 ## 
 seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
