@@ -30,6 +30,7 @@ samtools index all.sorted.bam
 samtools faidx ${REF}
 samtools view -bF 4 all.sorted.bam > all.F.sorted.bam
 samtools fasta all.F.sorted.bam > all.F.fasta
+cp all.F.fasta L01.fasta
 seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
 #seqkit seq -m 1000 -M 2000 -w 0 all.F.fasta > t/12/F 
 #seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
