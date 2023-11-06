@@ -22,7 +22,7 @@ recalladapters -s ${DATA} -o ${OUTPUT_BAM} --disableAdapterCorrection --adapters
 ccs --minPasses 3 --min-rq 0.99 --report-file report.txt ${OUTPUT_BAM} ${OUTPUT_CCS}
 samtools view ${OUTPUT_CCS} | awk '{OFS="\t"; print ">"$1"\n"$10}' > ${OUTPUT_FASTA}
 
-#  Minimap2 Alignments
+##  Minimap2 Alignments
 minimap2 -d ref.min ${REF}
 minimap2 -ax map-pb ref.min outccs3.fasta > all.sam
 samtools sort -@ 4 -O bam -o all.sorted.bam all.sam
@@ -30,7 +30,14 @@ samtools index all.sorted.bam
 samtools faidx ${REF}
 samtools view -bF 4 all.sorted.bam > all.F.sorted.bam
 samtools fasta all.F.sorted.bam > all.F.fasta
+
+## blast preparation
 cp all.F.fasta L01.fasta
+makeblastdb -in ref.fasta -dbtype nucl
+#1st loop
+blastn -db ref.fasta -query L01.fasta -task blastn -outfmt 6 -max_hsps 1 -out b1
+
+## 
 seqkit fx2tab -l -n -i -H all.F.fasta > Flen.txt
 #seqkit seq -m 1000 -M 2000 -w 0 all.F.fasta > t/12/F 
 #seqkit sample -p 0.2 -w 0 all.F.fasta > Fx.fasta
