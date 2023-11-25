@@ -34,5 +34,5 @@ df = df[desired_columns]
 df = df.applymap(process_cell)
 
 output_file = 'export/t/urnew.csv'  # 保存到export/t文件夹
-df.to_csv(output_file, index=False)
+df.to_csv(output_file, sep='\t', index=False)
 
