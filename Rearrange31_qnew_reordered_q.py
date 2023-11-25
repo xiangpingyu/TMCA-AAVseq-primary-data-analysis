@@ -36,4 +36,4 @@ df = df.applymap(process_cell)
 df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
 output_file = 'export/t/uqnew.csv'  # 保存到export/t文件夹
-df.to_csv(output_file, index=False)
+df.to_csv(output_file, sep='\t', index=False)
