@@ -5,4 +5,4 @@ python Rearrange1_sorted_qcom.py && python Rearrange2_rearrange_qnew.py &&  pyth
 
 ### "Delimiters: Space" uqnew.csv and urnew.csv，and then run
 
-python Rearrange4_qs_merged_u
+python Rearrange4_qs_merged_u.py
