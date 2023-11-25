@@ -1,17 +1,13 @@
 import pandas as pd
 
-# 读取原始数据文件，假设数据文件名为qnew.csv
 input_file = 'export/t/qnew.csv'
-df = pd.read_csv(input_file)  # 假设数据文件是以制表符分隔的
+df = pd.read_csv(input_file)   
 
-
-# 定义一个函数，用于处理每个单元格，确保中间没有空格
 def process_cell(cell):
     if pd.notna(cell) and isinstance(cell, str):
-        return ' '.join(cell.split())  # 移除中间的空格
+        return ' '.join(cell.split())   
     return cell
 
-# 重新排列列的顺序
 desired_columns = ['seq_name', 'qstart_new_b41', 'qend_new_b41', 'qstart_new_b31', 'qend_new_b31',
                    'qstart_new_b42', 'qend_new_b42', 'qstart_new_b21', 'qend_new_b21',
                    'qstart_new_b43', 'qend_new_b43', 'qstart_new_b32', 'qend_new_b32',
@@ -30,10 +26,8 @@ desired_columns = ['seq_name', 'qstart_new_b41', 'qend_new_b41', 'qstart_new_b31
                    'qstart_new_b416', 'qend_new_b416']
 
 df = df[desired_columns]
-
-# 遍历DataFrame的每个单元格，应用处理函数
 df = df.applymap(process_cell)
 df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 
-output_file = 'export/t/uqnew.csv'  # 保存到export/t文件夹
+output_file = 'export/t/uqnew.csv'   
 df.to_csv(output_file, sep='\t', index=False)
