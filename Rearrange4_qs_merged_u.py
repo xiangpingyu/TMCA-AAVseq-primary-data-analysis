@@ -1,13 +1,13 @@
 import pandas as pd
 
-# 读取第一个CSV文件
-df1 = pd.read_csv('export/t/urnew.csv')
+# Reading the first CSV file
+df1 = pd.read_csv('export/t/urnew_modified.csv')
 
-# 读取第二个CSV文件
-df2 = pd.read_csv('export/t/uqnew.csv')
+# Reading the second CSV file
+df2 = pd.read_csv('export/t/uqnew_modified.csv')
 
-# 合并两个DataFrame，将df2合并到df1的右侧
+# Merging the two DataFrames, appending df2 to the right side of df1
 merged_df = pd.concat([df1, df2], axis=1)
 
-# 保存合并后的DataFrame为新的CSV文件
+# Saving the merged DataFrame to a new CSV file
 merged_df.to_csv('export/t/u.csv', index=False)
