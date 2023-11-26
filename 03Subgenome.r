@@ -24,19 +24,16 @@ Subgenome <- function(u) {
   # Function to check if any interval between even and the next odd column exceeds 40bp
   check_row_intervals <- function(row) {
     max_interval <- 40
-    q_cols <- grep("^q", names(row))  # 找到列名以 "q" 开头的列的索引
+    q_cols <- grep("^q", names(row))   
     
-    # 只遍历偶数 "q" 列并检查与下一列（奇数列）的间隔
     for (i in seq(2, length(q_cols) - 1, by = 2)) {
-      if (i + 1 > length(q_cols)) break  # 防止索引越界
+      if (i + 1 > length(q_cols)) break   
       
       val1 <- as.numeric(row[q_cols[i]])
       val2 <- as.numeric(row[q_cols[i + 1]])
-
-      # 如果任一值为NA，则跳过这对值
+ 
       if (is.na(val1) || is.na(val2)) next
       
-      # 检查间隔是否超过40bp
       if (abs(val2 - val1) > max_interval) {
         return(FALSE)
       }
